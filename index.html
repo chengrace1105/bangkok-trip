@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>曼谷五天</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Work+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap');
+
+  :root {
+    --bg: #eaf1f8;
+    --surface: #ffffff;
+    --surface-2: #e0ebf4;
+    --ink: #16283f;
+    --muted: #5b6b80;
+    --line: #d3e1ee;
+    --accent: #2f6fb5;
+    --accent-ink: #ffffff;
+    --accent2: #123a63;
+    --resv-bg: #fdf6d8;
+    --resv-border: #e5cf78;
+    --shadow: 0 1px 2px rgba(15,35,60,.07), 0 8px 24px -12px rgba(15,35,60,.22);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #0c1a2b; --surface: #132840; --surface-2: #1a3454;
+      --ink: #eaf1f8; --muted: #93a8bf; --line: #24405f;
+      --accent: #6fa8dc; --accent-ink: #06192b; --accent2: #4f7fc9;
+      --resv-bg: #3a3319; --resv-border: #6b5a24;
+      --shadow: 0 1px 2px rgba(0,0,0,.35), 0 8px 24px -12px rgba(0,0,0,.55);
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #0c1a2b; --surface: #132840; --surface-2: #1a3454;
+    --ink: #eaf1f8; --muted: #93a8bf; --line: #24405f;
+    --accent: #6fa8dc; --accent-ink: #06192b; --accent2: #4f7fc9;
+    --resv-bg: #3a3319; --resv-border: #6b5a24;
+    --shadow: 0 1px 2px rgba(0,0,0,.35), 0 8px 24px -12px rgba(0,0,0,.55);
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    background: var(--bg); color: var(--ink);
+    font-family: 'Work Sans', system-ui, -apple-system, sans-serif;
+    padding-inline: 16px; padding-block: 0 40px;
+    margin: 0;
+  }
+  .wrap { max-width: 640px; margin: 0 auto; }
+  h1, h2, h3 { font-family: 'Fraunces', Georgia, serif; text-wrap: balance; margin: 0; }
+  .mono { font-family: 'IBM Plex Mono', ui-monospace, monospace; font-variant-numeric: tabular-nums; }
+
+  .hero { padding-block: 20px 12px; }
+  .hero .eyebrow {
+    font-family: 'IBM Plex Mono', monospace; font-size: .72rem;
+    letter-spacing: .12em; text-transform: uppercase; color: var(--accent); font-weight: 600;
+  }
+  .hero h1 { font-size: clamp(1.8rem, 7vw, 2.4rem); font-weight: 600; margin-top: 6px; }
+  .hero .sub { margin-top: 4px; color: var(--muted); font-size: .85rem; }
+
+  .factbar { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 16px; }
+  .fact {
+    background: var(--surface); border: 1px solid var(--line); border-radius: 10px;
+    padding: 8px 12px; font-size: .82rem; box-shadow: var(--shadow);
+    display: flex; flex-direction: column; gap: 2px;
+  }
+  .fact .k { color: var(--muted); font-size: .66rem; letter-spacing: .04em; text-transform: uppercase; }
+  .fact .v { font-weight: 600; }
+
+  .langtoggle {
+    position: sticky; top: env(safe-area-inset-top, 0px); z-index: 11;
+    display: flex; justify-content: flex-end; padding-top: 10px;
+    background: var(--bg); margin-inline: -16px; padding-inline: 16px;
+  }
+  .langtoggle .seg {
+    display: inline-flex; border: 1px solid var(--line); border-radius: 999px;
+    overflow: hidden; background: var(--surface); box-shadow: var(--shadow);
+  }
+  .langtoggle button {
+    font-family: 'IBM Plex Mono', monospace; font-size: .72rem; font-weight: 600;
+    border: none; background: transparent; color: var(--muted);
+    padding: 6px 14px; cursor: pointer;
+  }
+  .langtoggle button.active { background: var(--accent); color: var(--accent-ink); }
+
+  nav.daynav {
+    position: sticky; top: calc(env(safe-area-inset-top, 0px) + 34px); z-index: 10;
+    background: var(--bg); padding-block: 10px; margin-inline: -16px; padding-inline: 16px;
+    display: flex; gap: 8px; overflow-x: auto; border-bottom: 1px solid var(--line);
+  }
+  nav.daynav a {
+    flex: 0 0 auto; text-decoration: none; color: var(--ink);
+    background: var(--surface); border: 1px solid var(--line); border-radius: 999px;
+    padding: 6px 14px; font-size: .8rem; font-weight: 600; white-space: nowrap;
+  }
+  nav.daynav a span { color: var(--muted); font-weight: 500; margin-left: 4px; }
+
+  section.day { margin-top: 30px; scroll-margin-top: 90px; }
+  .day-head { display: flex; align-items: baseline; gap: 12px; padding-bottom: 12px; border-bottom: 2px solid var(--line); }
+  .day-num { font-family: 'Fraunces', serif; font-size: 2rem; font-weight: 600; color: var(--accent); line-height: 1; }
+  .day-head .title { flex: 1; min-width: 0; }
+  .day-head h2 { font-size: 1.1rem; font-weight: 600; }
+  .day-head .date { color: var(--muted); font-size: .8rem; margin-top: 2px; }
+
+  .phase { margin-top: 16px; }
+  .phase-label {
+    font-family: 'IBM Plex Mono', monospace; font-size: .68rem; letter-spacing: .1em;
+    text-transform: uppercase; color: var(--muted); margin-bottom: 8px;
+  }
+  .cards { display: flex; flex-direction: column; gap: 8px; }
+  .card { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px; box-shadow: var(--shadow); }
+  .card.resv { background: var(--resv-bg); border-color: var(--resv-border); }
+  .card .row { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
+  .card h3 { font-size: .96rem; font-weight: 600; }
+  .card p { margin: 6px 0 0; font-size: .85rem; color: var(--muted); line-height: 1.5; }
+  .card p.addr { margin-top: 8px; }
+  .card p.addr a { color: var(--accent); text-decoration: none; }
+  .card p.addr a:hover { text-decoration: underline; }
+  .tag {
+    flex: 0 0 auto; display: inline-flex; align-items: center;
+    font-family: 'IBM Plex Mono', monospace; font-size: .72rem; font-weight: 700;
+    padding: 4px 11px; border-radius: 999px; letter-spacing: .01em;
+  }
+  .tag.fixed { background: var(--accent2); color: var(--accent-ink); }
+  .tag.pick { background: var(--surface-2); color: var(--ink); border: 1px solid var(--line); }
+
+  .notes {
+    margin-top: 36px; background: var(--surface); border: 1px solid var(--line);
+    border-radius: 14px; padding: 18px 18px 6px; box-shadow: var(--shadow);
+  }
+  .notes h2 { font-size: 1.05rem; margin-bottom: 10px; }
+  .notes dl { display: grid; grid-template-columns: auto 1fr; gap: 8px 14px; margin: 0 0 16px; font-size: .84rem; }
+  .notes dt { color: var(--muted); white-space: nowrap; }
+  .notes dd { margin: 0; }
+
+  footer { margin-top: 28px; text-align: center; color: var(--muted); font-size: .76rem; }
+
+  .gate {
+    position: fixed; inset: 0; z-index: 100; background: var(--bg);
+    display: flex; align-items: center; justify-content: center; padding: 24px;
+  }
+  .gate-box {
+    width: 100%; max-width: 320px; background: var(--surface); border: 1px solid var(--line);
+    border-radius: 16px; padding: 28px 24px; box-shadow: var(--shadow); text-align: center;
+  }
+  .gate-box h2 { font-size: 1.2rem; font-weight: 600; margin-bottom: 6px; }
+  .gate-box p.hint { color: var(--muted); font-size: .82rem; margin: 0 0 18px; }
+  .gate-box input {
+    width: 100%; font-family: 'IBM Plex Mono', monospace; font-size: 1.1rem; letter-spacing: .2em;
+    text-align: center; padding: 10px 12px; border-radius: 10px; border: 1px solid var(--line);
+    background: var(--bg); color: var(--ink); box-sizing: border-box;
+  }
+  .gate-box button {
+    margin-top: 12px; width: 100%; padding: 10px 12px; border-radius: 10px; border: none;
+    background: var(--accent); color: var(--accent-ink); font-weight: 600; font-size: .9rem; cursor: pointer;
+  }
+  .gate-box .err { color: #c0503f; font-size: .78rem; margin-top: 10px; min-height: 1em; }
+</style>
+</head>
+<body>
+
+<div class="gate" id="gate">
+  <div class="gate-box">
+    <h2 data-i18n="gate-h">曼谷五天</h2>
+    <p class="hint" data-i18n="gate-hint">輸入密碼查看行程</p>
+    <input type="password" id="gate-pw" inputmode="numeric" maxlength="8" autocomplete="off" />
+    <button type="button" id="gate-btn" data-i18n="gate-btn">解鎖</button>
+    <p class="err" id="gate-err"></p>
+  </div>
+</div>
+
+<div class="wrap" id="content" style="display:none">
+
+  <div class="langtoggle">
+    <div class="seg">
+      <button type="button" data-lang="zh" class="active">中文</button>
+      <button type="button" data-lang="en">EN</button>
+    </div>
+  </div>
+
+  <div class="hero">
+    <div class="eyebrow">Hank &amp; Grace · Bangkok</div>
+    <h1 data-i18n="title">曼谷五天</h1>
+    <p class="sub" data-i18n="subtitle">輕鬆行程，純粹 Guide</p>
+    <div class="factbar">
+      <div class="fact"><span class="k" data-i18n="f1k">日期</span><span class="v mono" data-i18n="dates-range">9/30 – 10/4</span></div>
+      <div class="fact"><span class="k" data-i18n="f2k">住宿</span><span class="v">Ascott Thonglor Bangkok</span></div>
+      <div class="fact"><span class="k" data-i18n="f3k">10/2 訂位</span><span class="v">20:00 iODE・22:00 Bar Sathorn</span></div>
+    </div>
+  </div>
+
+  <nav class="daynav">
+    <a href="#d1"><span data-i18n="date-930">9/30</span> <span data-i18n="wed">三</span></a>
+    <a href="#d2"><span data-i18n="date-101">10/1</span> <span data-i18n="thu">四</span></a>
+    <a href="#d3"><span data-i18n="date-102">10/2</span> <span data-i18n="fri">五</span></a>
+    <a href="#d4"><span data-i18n="date-103">10/3</span> <span data-i18n="sat">六</span></a>
+    <a href="#d5"><span data-i18n="date-104">10/4</span> <span data-i18n="sun">日</span></a>
+  </nav>
+
+  <!-- DAY 1 -->
+  <section class="day" id="d1">
+    <div class="day-head">
+      <div class="day-num mono">01</div>
+      <div class="title">
+        <h2 data-i18n="d1-title">抵達</h2>
+        <div class="date mono"><span data-i18n="date-930">9/30</span> <span data-i18n="wed">三</span></div>
+      </div>
+    </div>
+    <div class="phase">
+      <div class="cards">
+        <div class="card">
+          <div class="row">
+            <h3 data-i18n="d1-0-h">Hank 抵達</h3>
+            <span class="tag pick" data-i18n="byflight-hk">依航班</span>
+          </div>
+          <p data-i18n="d1-0-p">香港飛曼谷，時間與 Grace 相近，機場碰面。</p>
+        </div>
+        <div class="card">
+          <div class="row">
+            <h3 data-i18n="d1-1-h">Grace 抵達</h3>
+            <span class="tag pick mono">CI835・16:20</span>
+          </div>
+          <p data-i18n="d1-1-p">桃園飛曼谷，落地 16:20。</p>
+        </div>
+        <div class="card">
+          <h3 data-i18n="d1-transit-h">機場 → 飯店</h3>
+          <p data-i18n="d1-transit-p">Airport Rail Link 到 Phaya Thai（26分鐘，45泰銖），轉 BTS Sukhumvit 線（同系統免出站）坐到 Thong Lo 站，步行約 5-10 分鐘到飯店。全程約 50-60 分鐘。</p>
+        </div>
+        <div class="card">
+          <h3>Ascott Thonglor Bangkok</h3>
+          <p>1 Soi Sukhumvit 59, Khlong Tan Nuea, Watthana, Bangkok</p>
+          <p class="addr"><a href="https://www.google.com/maps/search/?api=1&query=Ascott+Thonglor+Bangkok" target="_blank" rel="noopener">Google Maps</a></p>
+        </div>
+        <div class="card">
+          <h3 data-i18n="d1-3-h">Day2 按摩訂位</h3>
+          <p data-i18n="d1-3-p">路過 Sakura Spa 或 White Wood Green 時現場訂明天下午時段。</p>
+        </div>
+        <div class="card">
+          <h3 data-i18n="friendsdinner">晚餐</h3>
+          <p data-i18n="d1-2-p">自行安排。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DAY 2 -->
+  <section class="day" id="d2">
+    <div class="day-head">
+      <div class="day-num mono">02</div>
+      <div class="title">
+        <h2 data-i18n="d2-title">Thonglor：運動・按摩・自然酒</h2>
+        <div class="date mono"><span data-i18n="date-101">10/1</span> <span data-i18n="thu">四</span></div>
+      </div>
+    </div>
+    <div class="phase">
+      <div class="phase-label" data-i18n="morning">上午</div>
+      <div class="cards">
+        <div class="card">
+          <h3 data-i18n="d2-1-h">Benjakitti Forest Park</h3>
+          <p data-i18n="d2-1-p">跑步。BTS Thong Lo → Asok，兩站，步行 5 分鐘進公園。</p>
+          <p class="addr"><a href="https://www.google.com/maps/search/?api=1&query=Benjakitti+Forest+Park+Bangkok" target="_blank" rel="noopener">Google Maps</a></p>
+        </div>
+        <div class="card">
+          <h3 data-i18n="d2-2-h">飯店休息游泳</h3>
+        </div>
+      </div>
+    </div>
+    <div class="phase">
+      <div class="phase-label" data-i18n="afternoon">下午</div>
+      <div class="cards">
+        <div class="card">
+          <h3 data-i18n="d2-3-h">午餐</h3>
+          <p data-i18n="d2-3-p">Thonglor 街區，不特別安排。</p>
+        </div>
+        <div class="card">
+          <h3 data-i18n="massage">按摩</h3>
+          <p data-i18n="d2-4-p">Sakura Spa 或 White Wood Green，90 分鐘。</p>
+          <p class="addr">
+            <a href="https://www.google.com/maps/search/?api=1&query=Sakura+Spa+Ekkamai+Bangkok" target="_blank" rel="noopener">Sakura Spa</a> ・
+            <a href="https://www.google.com/maps/search/?api=1&query=White+Wood+Green+53+Ekkamai+Soi+12+Bangkok" target="_blank" rel="noopener">White Wood Green</a>
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="phase">
+      <div class="phase-label" data-i18n="evening">晚上</div>
+      <div class="cards">
+        <div class="card">
+          <h3>wuunwine</h3>
+          <p data-i18n="d2-5-p">自然酒，晚餐前。</p>
+          <p class="addr"><a href="https://www.google.com/maps/search/?api=1&query=wuunwine+Soi+Charoen+Chai+Bangkok" target="_blank" rel="noopener">Google Maps</a></p>
+        </div>
+        <div class="card">
+          <h3 data-i18n="friendsdinner">晚餐</h3>
+          <p data-i18n="d2-6-p">朋友聚餐，自行安排，時間留白。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DAY 3 -->
+  <section class="day" id="d3">
+    <div class="day-head">
+      <div class="day-num mono">03</div>
+      <div class="title">
+        <h2 data-i18n="d3-title">MOCA・藝術設計・iODE</h2>
+        <div class="date mono"><span data-i18n="date-102">10/2</span> <span data-i18n="fri">五</span></div>
+      </div>
+    </div>
+    <div class="phase">
+      <div class="phase-label" data-i18n="morning">上午</div>
+      <div class="cards">
+        <div class="card">
+          <h3>MOCA Bangkok</h3>
+          <p data-i18n="d3-1-p">車程 30-45 分鐘，無 BTS 直達。</p>
+          <p class="addr"><a href="https://www.google.com/maps/search/?api=1&query=MOCA+Bangkok+499+Kamphaeng+Phet+6+Road" target="_blank" rel="noopener">499 Kamphaeng Phet 6 Road, Chatuchak</a></p>
+        </div>
+        <div class="card">
+          <h3>Jim Thompson House</h3>
+          <p data-i18n="d3-2-p">National Stadium 站附近，與 BACC 步行 10 分鐘內。</p>
+          <p class="addr"><a href="https://www.google.com/maps/search/?api=1&query=Jim+Thompson+House+6+Soi+Kasem+San+2+Bangkok" target="_blank" rel="noopener">6 Soi Kasem San 2, Rama 1 Road, Pathum Wan</a></p>
+        </div>
+      </div>
+    </div>
+    <div class="phase">
+      <div class="phase-label" data-i18n="afternoon">下午</div>
+      <div class="cards">
+        <div class="card">
+          <h3 data-i18n="d3-3-h">午餐</h3>
+          <p data-i18n="d3-3-p">Siam 一帶，不特別安排。</p>
+        </div>
+        <div class="card">
+          <h3>BACC</h3>
+          <p data-i18n="d3-4-p">曼谷藝術文化中心，National Stadium 站對面。今年雙年展 10/22 開展，尚未開放。</p>
+          <p class="addr"><a href="https://www.google.com/maps/search/?api=1&query=Bangkok+Art+and+Culture+Centre+939+Rama+1+Road" target="_blank" rel="noopener">939 Rama 1 Road, Pathum Wan</a></p>
+        </div>
+        <div class="card">
+          <h3 data-i18n="d3-5-h">Siam Square</h3>
+          <p data-i18n="d3-5-p">逛街 + 小吃，約 1.5 小時。</p>
+          <p class="addr"><a href="https://www.google.com/maps/search/?api=1&query=Siam+Square+Bangkok" target="_blank" rel="noopener">Google Maps</a></p>
+        </div>
+        <div class="card">
+          <h3 data-i18n="d3-arch-h">沿途建築</h3>
+          <p data-i18n="d3-arch-p">BACC 本身是螺旋動線的清水模建築；Jim Thompson House 是傳統泰式柚木高腳屋。晚上往 Sathorn 移動時，會經過 King Power MahaNakhon（Ole Scheeren 設計，曼谷地標高樓）。</p>
+        </div>
+      </div>
+    </div>
+    <div class="phase">
+      <div class="phase-label" data-i18n="evening">晚上</div>
+      <div class="cards">
+        <div class="card resv">
+          <div class="row">
+            <h3>iODE</h3>
+            <span class="tag fixed mono" data-i18n="reserved-2000">已訂位 20:00</span>
+          </div>
+          <p data-i18n="d3-6-p">Sathorn / Lumphini。Siam 過去車程 20-30 分鐘，留寬裕時間。</p>
+          <p class="addr"><a href="https://www.google.com/maps/search/?api=1&query=iODE+76%2F8-9+Soi+Sribumphen+Sathon+Bangkok" target="_blank" rel="noopener">76/8-9 Soi Sribumphen, Thung Maha Mek, Sathon</a></p>
+        </div>
+        <div class="card resv">
+          <div class="row">
+            <h3>Bar Sathorn</h3>
+            <span class="tag fixed mono" data-i18n="reserved-2200">已訂位 22:00</span>
+          </div>
+          <p data-i18n="d3-7-p">W Bangkok 內，與 iODE 同區。50 Best #17。</p>
+          <p class="addr"><a href="https://www.google.com/maps/search/?api=1&query=W+Bangkok+106+North+Sathorn+Road" target="_blank" rel="noopener">106 North Sathorn Road, Silom</a></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DAY 4 -->
+  <section class="day" id="d4">
+    <div class="day-head">
+      <div class="day-num mono">04</div>
+      <div class="title">
+        <h2>Safari World</h2>
+        <div class="date mono"><span data-i18n="date-103">10/3</span> <span data-i18n="sat">六</span></div>
+      </div>
+    </div>
+    <div class="phase">
+      <div class="phase-label" data-i18n="daytime">白天</div>
+      <div class="cards">
+        <div class="card">
+          <h3>Safari World</h3>
+          <p data-i18n="d4-1-p">園區遊園巴士，不需自行開車。車程單趟 45-60 分鐘，無 BTS 直達。野生動物區 + 海洋世界，午餐可在園內解決。</p>
+          <p data-i18n="d4-1-msg">3歲女友想去動物園，但如果你不想也沒關係，就再看去哪裡，如果你超帥願意陪我去動物園，我再請助理訂車 🩵 我都可以</p>
+          <p class="addr"><a href="https://www.google.com/maps/search/?api=1&query=Safari+World+99+Panya+Indra+Road+Bangkok" target="_blank" rel="noopener">99 Panya Indra Road, Khlong Sam Wa</a></p>
+        </div>
+        <div class="card">
+          <h3 data-i18n="d4-2-h">飯店休息 / 按摩</h3>
+          <p data-i18n="d4-2-p">不想外出的話，留在飯店休息，或加訂一次按摩。</p>
+        </div>
+      </div>
+    </div>
+    <div class="phase">
+      <div class="phase-label" data-i18n="dusk">傍晚</div>
+      <div class="cards">
+        <div class="card">
+          <div class="row">
+            <h3 data-i18n="d4-3-h">Dry Wave Cocktail Studio</h3>
+            <span class="tag pick" data-i18n="walkin">免訂位</span>
+          </div>
+          <p data-i18n="d4-3-p">50 Best #4，Thonglor 巷內，離飯店約 1-1.5 公里。傍晚時段去，不用特別訂位。</p>
+          <p class="addr"><a href="https://www.google.com/maps/search/?api=1&query=Dry+Wave+Cocktail+Studio+263+Thong+Lo+13+Bangkok" target="_blank" rel="noopener">Google Maps</a></p>
+        </div>
+      </div>
+    </div>
+    <div class="phase">
+      <div class="phase-label" data-i18n="evening">晚上</div>
+      <div class="cards">
+        <div class="card">
+          <h3 data-i18n="friendsdinner">晚餐</h3>
+          <p data-i18n="d4-4-p">朋友聚餐，自行安排，時間留白。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DAY 5 -->
+  <section class="day" id="d5">
+    <div class="day-head">
+      <div class="day-num mono">05</div>
+      <div class="title">
+        <h2 data-i18n="d5-title">離開</h2>
+        <div class="date mono"><span data-i18n="date-104">10/4</span> <span data-i18n="sun">日</span></div>
+      </div>
+    </div>
+    <div class="phase">
+      <div class="cards">
+        <div class="card">
+          <div class="row">
+            <h3 data-i18n="d5-3-h">Grace 前往機場</h3>
+            <span class="tag pick mono">CI834・10:50</span>
+          </div>
+          <p data-i18n="d5-3-p">曼谷飛桃園，10:50 起飛、15:30 到。國際線建議提早 3 小時，飯店到機場 40-60 分鐘，7 點前需出發。Hank 航班時間相近，可同行。</p>
+          <p class="addr"><a href="https://www.google.com/maps/search/?api=1&query=Suvarnabhumi+Airport" target="_blank" rel="noopener">Suvarnabhumi Airport</a></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="notes">
+    <h2 data-i18n="notes-h">備忘</h2>
+    <dl>
+      <dt data-i18n="notes-1k">住宿</dt><dd>Ascott Thonglor Bangkok，1 Soi Sukhumvit 59</dd>
+      <dt data-i18n="notes-2k">10/2 訂位</dt><dd data-i18n="notes-2v">iODE 20:00・Bar Sathorn 22:00</dd>
+      <dt data-i18n="notes-3k">移動方式</dt><dd data-i18n="notes-3v">市區 BTS + Grab；Day 4 Safari World 需包車</dd>
+      <dt data-i18n="notes-4k">時間標示</dt><dd data-i18n="notes-4v">淡黃色卡片為已訂位項目，其餘為建議順序</dd>
+      <dt data-i18n="notes-5k">晚餐穿著</dt><dd data-i18n="notes-5v">每天晚餐都穿輕便正裝（smart casual），不要太隨便</dd>
+    </dl>
+  </div>
+
+</div>
+
+<script>
+(function () {
+  var dict = {
+    "title": { zh: "曼谷五天", en: "Bangkok, Five Days" },
+    "subtitle": { zh: "輕鬆行程，純粹 Guide", en: "A relaxed itinerary — just a guide" },
+    "gate-h": { zh: "曼谷五天", en: "Bangkok, Five Days" },
+    "gate-hint": { zh: "輸入密碼查看行程", en: "Enter the password to view the itinerary" },
+    "gate-btn": { zh: "解鎖", en: "Unlock" },
+    "gate-err": { zh: "密碼不對，再試一次", en: "Wrong password, try again" },
+    "f1k": { zh: "日期", en: "Dates" },
+    "f2k": { zh: "住宿", en: "Staying at" },
+    "wed": { zh: "三", en: "Wed" }, "thu": { zh: "四", en: "Thu" }, "fri": { zh: "五", en: "Fri" },
+    "sat": { zh: "六", en: "Sat" }, "sun": { zh: "日", en: "Sun" },
+    "morning": { zh: "上午", en: "Morning" },
+    "afternoon": { zh: "下午", en: "Afternoon" },
+    "evening": { zh: "晚上", en: "Evening" },
+    "daytime": { zh: "白天", en: "Daytime" },
+    "dusk": { zh: "傍晚", en: "Early evening" },
+    "byflight-hk": { zh: "依航班", en: "Per flight" },
+    "friendsdinner": { zh: "晚餐", en: "Dinner" },
+    "massage": { zh: "按摩", en: "Massage" },
+    "walkin": { zh: "免訂位", en: "No booking" },
+
+    "date-930": { zh: "9/30", en: "30 Sep" },
+    "date-101": { zh: "10/1", en: "1 Oct" },
+    "date-102": { zh: "10/2", en: "2 Oct" },
+    "date-103": { zh: "10/3", en: "3 Oct" },
+    "date-104": { zh: "10/4", en: "4 Oct" },
+    "dates-range": { zh: "9/30 – 10/4", en: "30 Sep – 4 Oct" },
+
+    "d1-title": { zh: "抵達", en: "Arrival" },
+    "d1-0-h": { zh: "Hank 抵達", en: "Hank arrives" },
+    "d1-0-p": { zh: "香港飛曼谷，時間與 Grace 相近，機場碰面。", en: "Flying in from Hong Kong, similar time to Grace — meeting at the airport." },
+    "d1-1-h": { zh: "Grace 抵達", en: "Grace arrives" },
+    "d1-1-p": { zh: "桃園飛曼谷，落地 16:20。", en: "Flying Taoyuan → Bangkok, landing 4:20 PM." },
+    "d1-transit-h": { zh: "機場 → 飯店", en: "Airport → hotel" },
+    "d1-transit-p": { zh: "Airport Rail Link 到 Phaya Thai（26分鐘，45泰銖），轉 BTS Sukhumvit 線（同系統免出站）坐到 Thong Lo 站，步行約 5-10 分鐘到飯店。全程約 50-60 分鐘。",
+                     en: "Airport Rail Link to Phaya Thai (26 min, 45 THB), then BTS Sukhumvit Line (same system, no exit needed) to Thong Lo station, 5-10 min walk to the hotel. About 50-60 minutes total." },
+    "d1-3-h": { zh: "Day2 按摩訂位", en: "Book Day 2 massage" },
+    "d1-3-p": { zh: "路過 Sakura Spa 或 White Wood Green 時現場訂明天下午時段。", en: "Book tomorrow afternoon's slot in person at Sakura Spa or White Wood Green when passing by." },
+    "d1-2-p": { zh: "朋友聚餐，自行安排，時間留白。", en: "Dinner with friends, self-arranged, kept open." },
+
+    "d2-title": { zh: "Thonglor：運動・按摩・自然酒", en: "Thonglor: sport, spa, natural wine" },
+    "d2-1-h": { zh: "Benjakitti Forest Park", en: "Benjakitti Forest Park" },
+    "d2-1-p": { zh: "跑步。BTS Thong Lo → Asok，兩站，步行 5 分鐘進公園。", en: "Run. BTS Thong Lo → Asok, two stops, 5-minute walk into the park." },
+    "d2-2-h": { zh: "飯店休息游泳", en: "Rest & swim at the hotel" },
+    "d2-3-h": { zh: "午餐", en: "Lunch" },
+    "d2-3-p": { zh: "Thonglor 街區，不特別安排。", en: "Around Thonglor, nothing specific planned." },
+    "d2-4-p": { zh: "Sakura Spa 或 White Wood Green，90 分鐘。", en: "Sakura Spa or White Wood Green, 90 minutes." },
+    "d2-5-p": { zh: "自然酒，晚餐前。", en: "Natural wine, before dinner." },
+    "d2-6-p": { zh: "朋友聚餐，自行安排，時間留白。", en: "Dinner with friends, self-arranged, kept open." },
+
+    "d3-title": { zh: "MOCA・藝術設計・iODE", en: "MOCA, art & design, iODE" },
+    "d3-1-p": { zh: "車程 30-45 分鐘，無 BTS 直達。", en: "30-45 minutes by car, no direct BTS." },
+    "d3-2-p": { zh: "National Stadium 站附近，與 BACC 步行 10 分鐘內。", en: "Near National Stadium station, under 10 minutes on foot from BACC." },
+    "d3-3-h": { zh: "午餐", en: "Lunch" },
+    "d3-3-p": { zh: "Siam 一帶，不特別安排。", en: "Around Siam, nothing specific planned." },
+    "d3-4-p": { zh: "曼谷藝術文化中心，National Stadium 站對面。今年雙年展 10/22 開展，尚未開放。",
+                en: "Bangkok Art and Culture Centre, across from National Stadium station. This year's Biennale opens 10/22 — not yet running." },
+    "d3-5-h": { zh: "Siam Square", en: "Siam Square" },
+    "d3-5-p": { zh: "逛街 + 小吃，約 1.5 小時。", en: "Shopping and street food, about 1.5 hours." },
+    "d3-arch-h": { zh: "沿途建築", en: "Architecture along the way" },
+    "d3-arch-p": { zh: "BACC 本身是螺旋動線的清水模建築；Jim Thompson House 是傳統泰式柚木高腳屋。晚上往 Sathorn 移動時，會經過 King Power MahaNakhon（Ole Scheeren 設計，曼谷地標高樓）。",
+                   en: "BACC itself is a spiral-ramp raw-concrete building; Jim Thompson House is a traditional Thai teak stilt house. Heading to Sathorn in the evening, you'll pass King Power MahaNakhon (designed by Ole Scheeren, Bangkok's landmark tower)." },
+    "reserved-2000": { zh: "已訂位 20:00", en: "Reserved 8:00 PM" },
+    "d3-6-p": { zh: "Sathorn / Lumphini。Siam 過去車程 20-30 分鐘，留寬裕時間。", en: "Sathorn / Lumphini. 20-30 minutes from Siam — leave room to spare." },
+    "reserved-2200": { zh: "已訂位 22:00", en: "Reserved 10:00 PM" },
+    "d3-7-p": { zh: "W Bangkok 內，與 iODE 同區。50 Best #17。", en: "Inside W Bangkok, same area as iODE. Asia's 50 Best Bars #17." },
+
+    "d4-1-p": { zh: "園區遊園巴士，不需自行開車。車程單趟 45-60 分鐘，無 BTS 直達。野生動物區 + 海洋世界，午餐可在園內解決。",
+                en: "Park's own tour bus — no need to drive. 45-60 minutes each way, no direct BTS. Open zoo + marine park, lunch available on site." },
+    "d4-1-msg": { zh: "3歲女友想去動物園，但如果你不想也沒關係，就再看去哪裡，如果你超帥願意陪我去動物園，我再請助理訂車 🩵 我都可以",
+                  en: "My inner 3-year-old wants to go to the zoo — but it's okay if you'd rather not, we'll just figure something else out. If you're handsome enough to come with me, I'll have my assistant book the car 🩵 either way is fine with me" },
+    "d4-2-h": { zh: "飯店休息 / 按摩", en: "Rest at the hotel / massage" },
+    "d4-2-p": { zh: "不想外出的話，留在飯店休息，或加訂一次按摩。", en: "Stay in and rest, or book another massage, if you'd rather not go out." },
+    "d4-3-h": { zh: "Dry Wave Cocktail Studio", en: "Dry Wave Cocktail Studio" },
+    "d4-3-p": { zh: "50 Best #4，Thonglor 巷內，離飯店約 1-1.5 公里。傍晚時段去，不用特別訂位。",
+                en: "Asia's 50 Best #4, tucked in a Thonglor alley, about 1-1.5 km from the hotel. Going in the early evening, no reservation needed." },
+    "d4-4-p": { zh: "朋友聚餐，自行安排，時間留白。", en: "Dinner with friends, self-arranged, kept open." },
+
+    "d5-title": { zh: "離開", en: "Departure" },
+    "d5-3-h": { zh: "Grace 前往機場", en: "Grace heads to the airport" },
+    "d5-3-p": { zh: "曼谷飛桃園，10:50 起飛、15:30 到。國際線建議提早 3 小時，飯店到機場 40-60 分鐘，7 點前需出發。Hank 航班時間相近，可同行。",
+                en: "Flying Bangkok → Taoyuan, departing 10:50 AM, landing 3:30 PM. International check-in wants 3 hours; 40-60 minutes hotel to airport — leave before 7 AM. Hank's flight is similar timing, can travel together." },
+
+    "notes-h": { zh: "備忘", en: "Notes" },
+    "notes-1k": { zh: "住宿", en: "Staying at" },
+    "notes-2k": { zh: "10/2 訂位", en: "Bookings, 10/2" },
+    "notes-2v": { zh: "iODE 20:00・Bar Sathorn 22:00", en: "iODE 8:00 PM · Bar Sathorn 10:00 PM" },
+    "notes-3k": { zh: "移動方式", en: "Getting around" },
+    "notes-3v": { zh: "市區 BTS + Grab；Day 4 Safari World 需包車", en: "BTS + Grab within the city; Day 4's Safari World needs a hired car" },
+    "notes-4k": { zh: "時間標示", en: "About the times" },
+    "notes-4v": { zh: "淡黃色卡片為已訂位項目，其餘為建議順序", en: "Pale-yellow cards are confirmed reservations; everything else is a suggested order" },
+    "notes-5k": { zh: "晚餐穿著", en: "Dinner dress code" },
+    "notes-5v": { zh: "每天晚餐都穿輕便正裝（smart casual），不要太隨便", en: "Smart casual for dinner every night — not too casual" }
+  };
+
+  var currentLang = "zh";
+  function applyLang(lang) {
+    currentLang = lang;
+    document.querySelectorAll("[data-i18n]").forEach(function (el) {
+      var key = el.getAttribute("data-i18n");
+      if (dict[key] && dict[key][lang]) el.textContent = dict[key][lang];
+    });
+    document.querySelectorAll(".langtoggle button").forEach(function (btn) {
+      btn.classList.toggle("active", btn.getAttribute("data-lang") === lang);
+    });
+    document.documentElement.setAttribute("lang", lang === "en" ? "en" : "zh-Hant");
+    try { localStorage.setItem("bkk-itinerary-lang", lang); } catch (e) {}
+  }
+
+  var initial = "zh";
+  try {
+    var stored = localStorage.getItem("bkk-itinerary-lang");
+    if (stored === "en" || stored === "zh") initial = stored;
+  } catch (e) {}
+
+  document.querySelectorAll(".langtoggle button").forEach(function (btn) {
+    btn.addEventListener("click", function () { applyLang(btn.getAttribute("data-lang")); });
+  });
+
+  applyLang(initial);
+
+  var GATE_PASSWORD = "1105";
+  function unlock() {
+    var gate = document.getElementById("gate");
+    var content = document.getElementById("content");
+    if (gate) gate.style.display = "none";
+    if (content) content.style.display = "";
+  }
+  function tryUnlock() {
+    var pw = document.getElementById("gate-pw");
+    var err = document.getElementById("gate-err");
+    if (pw && pw.value === GATE_PASSWORD) {
+      try { localStorage.setItem("bkk-itinerary-unlocked", "1"); } catch (e) {}
+      unlock();
+    } else if (err) {
+      err.textContent = dict["gate-err"][currentLang] || dict["gate-err"].zh;
+      if (pw) { pw.value = ""; pw.focus(); }
+    }
+  }
+  var alreadyUnlocked = false;
+  try { alreadyUnlocked = localStorage.getItem("bkk-itinerary-unlocked") === "1"; } catch (e) {}
+  if (alreadyUnlocked) unlock();
+
+  var gateBtn = document.getElementById("gate-btn");
+  if (gateBtn) gateBtn.addEventListener("click", tryUnlock);
+  var gatePw = document.getElementById("gate-pw");
+  if (gatePw) gatePw.addEventListener("keydown", function (e) { if (e.key === "Enter") tryUnlock(); });
+})();
+</script>
+</body>
+</html>

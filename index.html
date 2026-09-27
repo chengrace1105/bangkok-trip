@@ -100,6 +100,12 @@
   .day-head .title { flex: 1; min-width: 0; }
   .day-head h2 { font-size: 1.1rem; font-weight: 600; }
   .day-head .date { color: var(--muted); font-size: .8rem; margin-top: 2px; }
+  .day-head .rain { margin-left: 6px; color: var(--accent); white-space: nowrap; }
+  .day-head .wx {
+    flex: 0 0 auto; align-self: center; text-decoration: none; color: var(--accent);
+    font-size: .74rem; font-weight: 600; border: 1px solid var(--line); background: var(--surface);
+    border-radius: 999px; padding: 4px 10px; white-space: nowrap;
+  }
 
   .phase { margin-top: 16px; }
   .phase-label {
@@ -184,7 +190,6 @@
     <div class="factbar">
       <div class="fact"><span class="k" data-i18n="f1k">日期</span><span class="v mono" data-i18n="dates-range">9/30 – 10/4</span></div>
       <div class="fact"><span class="k" data-i18n="f2k">住宿</span><span class="v">Ascott Thonglor Bangkok</span></div>
-      <div class="fact"><span class="k" data-i18n="f3k">10/2 訂位</span><span class="v">20:00 iODE・22:00 Bar Sathorn</span></div>
     </div>
   </div>
 
@@ -202,8 +207,9 @@
       <div class="day-num mono">01</div>
       <div class="title">
         <h2 data-i18n="d1-title">抵達</h2>
-        <div class="date mono"><span data-i18n="date-930">9/30</span> <span data-i18n="wed">三</span></div>
+        <div class="date mono"><span data-i18n="date-930">9/30</span> <span data-i18n="wed">三</span> <span class="rain" data-rain="2026-09-30"></span></div>
       </div>
+      <a class="wx" href="https://www.google.com/search?q=%E6%9B%BC%E8%B0%B7%E5%A4%A9%E6%B0%A3%209%E6%9C%8830%E6%97%A5" target="_blank" rel="noopener" data-i18n="wx">天氣 ↗</a>
     </div>
     <div class="phase">
       <div class="cards">
@@ -253,8 +259,9 @@
       <div class="day-num mono">02</div>
       <div class="title">
         <h2 data-i18n="d2-title">Thonglor：運動・按摩・自然酒</h2>
-        <div class="date mono"><span data-i18n="date-101">10/1</span> <span data-i18n="thu">四</span></div>
+        <div class="date mono"><span data-i18n="date-101">10/1</span> <span data-i18n="thu">四</span> <span class="rain" data-rain="2026-10-01"></span></div>
       </div>
+      <a class="wx" href="https://www.google.com/search?q=%E6%9B%BC%E8%B0%B7%E5%A4%A9%E6%B0%A3%2010%E6%9C%881%E6%97%A5" target="_blank" rel="noopener" data-i18n="wx">天氣 ↗</a>
     </div>
     <div class="phase">
       <div class="phase-label" data-i18n="morning">上午</div>
@@ -312,8 +319,9 @@
       <div class="day-num mono">03</div>
       <div class="title">
         <h2 data-i18n="d3-title">MOCA・藝術設計・iODE</h2>
-        <div class="date mono"><span data-i18n="date-102">10/2</span> <span data-i18n="fri">五</span></div>
+        <div class="date mono"><span data-i18n="date-102">10/2</span> <span data-i18n="fri">五</span> <span class="rain" data-rain="2026-10-02"></span></div>
       </div>
+      <a class="wx" href="https://www.google.com/search?q=%E6%9B%BC%E8%B0%B7%E5%A4%A9%E6%B0%A3%2010%E6%9C%882%E6%97%A5" target="_blank" rel="noopener" data-i18n="wx">天氣 ↗</a>
     </div>
     <div class="phase">
       <div class="phase-label" data-i18n="morning">上午</div>
@@ -382,8 +390,9 @@
       <div class="day-num mono">04</div>
       <div class="title">
         <h2>Safari World</h2>
-        <div class="date mono"><span data-i18n="date-103">10/3</span> <span data-i18n="sat">六</span></div>
+        <div class="date mono"><span data-i18n="date-103">10/3</span> <span data-i18n="sat">六</span> <span class="rain" data-rain="2026-10-03"></span></div>
       </div>
+      <a class="wx" href="https://www.google.com/search?q=%E6%9B%BC%E8%B0%B7%E5%A4%A9%E6%B0%A3%2010%E6%9C%883%E6%97%A5" target="_blank" rel="noopener" data-i18n="wx">天氣 ↗</a>
     </div>
     <div class="phase">
       <div class="phase-label" data-i18n="daytime">白天</div>
@@ -435,8 +444,9 @@
       <div class="day-num mono">05</div>
       <div class="title">
         <h2 data-i18n="d5-title">離開</h2>
-        <div class="date mono"><span data-i18n="date-104">10/4</span> <span data-i18n="sun">日</span></div>
+        <div class="date mono"><span data-i18n="date-104">10/4</span> <span data-i18n="sun">日</span> <span class="rain" data-rain="2026-10-04"></span></div>
       </div>
+      <a class="wx" href="https://www.google.com/search?q=%E6%9B%BC%E8%B0%B7%E5%A4%A9%E6%B0%A3%2010%E6%9C%884%E6%97%A5" target="_blank" rel="noopener" data-i18n="wx">天氣 ↗</a>
     </div>
     <div class="phase">
       <div class="cards">
@@ -584,6 +594,7 @@
     "d5-4-h": { zh: "Hank 前往機場", en: "Hank heads to the airport" },
     "d5-4-p": { zh: "曼谷飛香港，11:00 起飛、15:05 到。和 Grace 一起搭 7:45 的車去機場。", en: "Flying Bangkok → Hong Kong, departing 11:00 AM, landing 3:05 PM. Taking the 7:45 AM car to the airport with Grace." },
 
+    "wx": { zh: "天氣 ↗", en: "Weather ↗" },
     "notes-h": { zh: "備忘", en: "Notes" },
     "notes-1k": { zh: "住宿", en: "Staying at" },
     "notes-2k": { zh: "10/2 訂位", en: "Bookings, 10/2" },
@@ -610,6 +621,33 @@
     });
     document.documentElement.setAttribute("lang", lang === "en" ? "en" : "zh-Hant");
     try { localStorage.setItem("bkk-itinerary-lang", lang); } catch (e) {}
+    renderRain();
+  }
+
+  // 降雨機率（Open-Meteo，飯店位置，曼谷時間）：早 06-12、午 12-18、晚 18-24 取最高值
+  var rainData = null;
+  function renderRain() {
+    var L = currentLang === "en" ? ["AM", "PM", "Eve"] : ["早", "午", "晚"];
+    document.querySelectorAll("[data-rain]").forEach(function (el) {
+      var d = rainData && rainData[el.getAttribute("data-rain")];
+      if (!d) { el.textContent = ""; return; }
+      el.textContent = "☔ " + L.map(function (l, i) { return l + " " + (d[i] == null ? "–" : d[i] + "%"); }).join(" · ");
+    });
+  }
+  function loadRain() {
+    var url = "https://api.open-meteo.com/v1/forecast?latitude=13.7317&longitude=100.5831" +
+      "&hourly=precipitation_probability&timezone=Asia%2FBangkok&start_date=2026-09-30&end_date=2026-10-04";
+    fetch(url).then(function (r) { return r.json(); }).then(function (j) {
+      var t = j.hourly.time, p = j.hourly.precipitation_probability, out = {};
+      for (var i = 0; i < t.length; i++) {
+        var day = t[i].slice(0, 10), h = parseInt(t[i].slice(11, 13), 10);
+        var slot = h >= 6 && h < 12 ? 0 : h >= 12 && h < 18 ? 1 : h >= 18 ? 2 : -1;
+        if (slot < 0 || p[i] == null) continue;
+        out[day] = out[day] || [null, null, null];
+        out[day][slot] = Math.max(out[day][slot] == null ? 0 : out[day][slot], p[i]);
+      }
+      rainData = out; renderRain();
+    }).catch(function () {});
   }
 
   var initial = "zh";
@@ -623,6 +661,7 @@
   });
 
   applyLang(initial);
+  loadRain();
 
   var GATE_PASSWORD = "1105";
   function unlock() {
